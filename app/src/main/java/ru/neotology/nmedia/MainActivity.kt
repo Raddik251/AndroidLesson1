@@ -2,6 +2,7 @@ package ru.neotology.nmedia
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.neotology.nmedia.databinding.ActivityMainBinding
@@ -14,6 +15,14 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.root.setOnClickListener{
+            println("binding.root clicked")
+        }
+
+/*        binding.avatar?.setOnClickListener{
+            println("avatar clicked")
+        }*/
 
         var likedByMe = false
         var likeCounts = 999
