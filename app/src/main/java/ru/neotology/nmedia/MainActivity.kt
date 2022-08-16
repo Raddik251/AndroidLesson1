@@ -4,11 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import androidx.activity.viewModels
+import androidx.annotation.DrawableRes
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.neotology.nmedia.databinding.ActivityMainBinding
 import ru.neotology.nmedia.dto.Post
+import ru.neotology.nmedia.viewModel.PostViewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel by viewModels<PostViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,44 +21,30 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.root.setOnClickListener{
-            println("binding.root clicked")
-        }
-
-/*        binding.avatar?.setOnClickListener{
-            println("avatar clicked")
-        }*/
-
-        var likedByMe = false
-        var likeCounts = 999
-        var shareCounts = 0
-        var imageResId = R.drawable.ic_baseline_favorite_border_24
+        viewModel.data.observe(this) {post -> binding.render(post)}
 
         binding.likeIcon?.setOnClickListener{
-            likedByMe = !likedByMe
-            if (likedByMe) {
-                imageResId = R.drawable.ic_baseline_favorite_24
-                with(binding) {
-                        countLikes.text = viewCounts(likeCounts + 1)
-                }
-            }
-            else {
-                imageResId = R.drawable.ic_baseline_favorite_border_24
-                with(binding) {
-                    countLikes.text = viewCounts(likeCounts)
-                }
-            }
-            binding.likeIcon.setImageResource(imageResId)
+            viewModel.onLikeClicked()
         }
 
         binding.shareIcon?.setOnClickListener{
-            shareCounts += 1
-                with(binding) {
-                    countShares.text = viewCounts(shareCounts)
-                }
+            viewModel.onShareClicked()
         }
 
     }
+
+    private fun ActivityMainBinding.render (post: Post) {
+        title.text = post.title
+        content.text = post.content
+        date.text = post.date
+        countLikes.text = viewCounts(post.countLikes)
+        countShares.text = viewCounts(post.countShares)
+        likeIcon?.setImageResource(getLikeIconResId(post.likedByMe))
+    }
+
+    @DrawableRes
+    private fun getLikeIconResId (liked: Boolean) =
+        if(liked) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24
 
     private fun viewCounts (counts:Int) : String {
         var finalCount = "0"
