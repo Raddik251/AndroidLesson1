@@ -2,9 +2,11 @@ package ru.neotology.nmedia.dto
 
 data class Post (
     val id: Long,
-    val author: String,
+    val title: String,
     val content: String,
-    val published: String,
-    var likes: Int = 0,
-    var likedByMe: Boolean = false
+    val date: String,
+    val countLikes: Int,
+    val countShares:Int,
+    val likes: Int = 0,
+    val likedByMe: Boolean = false
 )
