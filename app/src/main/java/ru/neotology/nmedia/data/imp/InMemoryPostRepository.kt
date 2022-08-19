@@ -7,40 +7,40 @@ import ru.neotology.nmedia.dto.Post
 
 class InMemoryPostRepository : PostRepository {
 
-    override val data = MutableLiveData(
-        Post(
-            id = 1L,
-            title = "Неотология - лучший онлайн-университет",
-            content = "Лучших преподавателей",
-            date = "16.08.2022",
-            countLikes = 999,
-            countShares = 0
-        )
-    )
-
-    override fun like() {
-        val currentPost = checkNotNull(data.value) {
-            "Data value should not be null"
-        }
-
-        val likedPost = currentPost.copy(
-            countLikes = if (!currentPost.likedByMe) currentPost.countLikes + 1 else currentPost.countLikes - 1,
-            likedByMe = !currentPost.likedByMe
-        )
-
-        data.value = likedPost
+    private val posts get() = checkNotNull(data.value) {
+        "Data value should not be null"
     }
 
-    override fun share() {
-        val currentPost = checkNotNull(data.value) {
-            "Data value should not be null"
+    override val data = MutableLiveData(
+        List(10) { index ->
+            Post(
+                id = index + 1L,
+                title = "Неотология - лучший онлайн-университет",
+                content = "Университет № ${index + 1} лучших преподавателей",
+                date = "16.08.2022",
+                countLikes = 999 + (100 * index) + 1,
+                countShares = 0
+            )
         }
+    )
 
-        val sharedPost = currentPost.copy(
-            countShares = currentPost.countShares + 1
-        )
+    override fun like(postId: Long) {
+        data.value = posts.map {
+            if (it.id != postId) it
+            else it.copy(
+                likedByMe = !it.likedByMe,
+                countLikes = if (!it.likedByMe) it.countLikes + 1 else it.countLikes - 1
+            )
+        }
+    }
 
-        data.value = sharedPost
+    override fun share(postId: Long) {
+        data.value = posts.map {
+            if (it.id != postId) it
+            else it.copy(
+                countShares = it.countShares + 1
+            )
+        }
     }
 
 }
