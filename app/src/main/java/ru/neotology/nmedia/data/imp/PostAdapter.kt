@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.neotology.nmedia.R
 import ru.neotology.nmedia.databinding.PostBinding
 import ru.neotology.nmedia.dto.Post
-import kotlin.properties.Delegates
 
 internal class PostAdapter(
     private val onLikeClicked: (Post) -> Unit,
@@ -37,15 +36,25 @@ internal class PostAdapter(
         private val binding: PostBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(post: Post) = with(binding) {
-            title.text = post.title
-            content.text = post.content
-            date.text = post.date
-            countLikes.text = viewCounts(post.countLikes)
-            countShares.text = viewCounts(post.countShares)
-            likeIcon?.setImageResource(getLikeIconResId(post.likedByMe))
-            likeIcon?.setOnClickListener { onLikeClicked(post) }
-            shareIcon?.setOnClickListener { onShareClicked(post) }
+        private lateinit var post: Post
+
+        init {
+            binding.likeIcon.setOnClickListener { onLikeClicked(post) }
+            binding.shareIcon.setOnClickListener { onShareClicked(post) }
+        }
+
+        fun bind(post: Post) {
+
+            this.post = post
+
+            with(binding) {
+                title.text = post.title
+                content.text = post.content
+                date.text = post.date
+                countLikes.text = viewCounts(post.countLikes)
+                countShares.text = viewCounts(post.countShares)
+                likeIcon.setImageResource(getLikeIconResId(post.likedByMe))
+            }
         }
 
         @DrawableRes
