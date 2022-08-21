@@ -33,7 +33,7 @@ class PostViewModel : ViewModel(), PostInteractionListener {
         )
         repository.save(post)
         currentPost.value = null
-        this.flag.value = !flag.value!!
+        this.flag.value = false
     }
 
     //region PostInreractionListener
@@ -46,7 +46,7 @@ class PostViewModel : ViewModel(), PostInteractionListener {
 
     override fun onEditClicked(post: Post) {
         currentPost.value = post
-        this.flag.value = !flag.value!!
+        this.flag.value = true
     }
 
     //endregion PostInreractionListener
