@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.neotology.nmedia.R
-import ru.neotology.nmedia.data.imp.InMemoryPostRepository
 import ru.neotology.nmedia.databinding.PostBinding
 import ru.neotology.nmedia.dto.Post
 
@@ -55,6 +54,7 @@ internal class PostAdapter(
         init {
             binding.likeIcon.setOnClickListener { listener.onLikeClicked(post) }
             binding.shareIcon.setOnClickListener { listener.onShareClicked(post) }
+            binding.options.setOnClickListener { popupMenu.show()}
         }
 
         fun bind(post: Post) {
@@ -65,34 +65,34 @@ internal class PostAdapter(
                 title.text = post.title
                 content.text = post.content
                 date.text = post.date
-                countLikes.text = viewCounts(post.countLikes)
-                countShares.text = viewCounts(post.countShares)
-                likeIcon.setImageResource(getLikeIconResId(post.likedByMe))
-                options.setOnClickListener { popupMenu.show() }
+                likeIcon.text = viewCounts(post.countLikes)
+                shareIcon.text = viewCounts(post.countShares)
+                likeIcon.isChecked = post.likedByMe
+/*                likeIcon.setButtonDrawable(getLikeIconResId(post.likedByMe))*/
             }
-        }
-
-        @DrawableRes
-        private fun getLikeIconResId(liked: Boolean) =
-            if (liked) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24
-
-        private fun viewCounts(counts: Int): String {
-            var finalCount = "0"
-            when (counts) {
-                in 0..999 -> finalCount = counts.toString()
-                in 1000..9999 -> finalCount = "${counts / 1000}.${(counts / 1000) / 100}K"
-                in 10000..99999 -> finalCount = "${counts / 10000}K"
-            }
-            return finalCount
         }
     }
 
-    private object DiffCallBack : DiffUtil.ItemCallback<Post>() {
+/*    @DrawableRes
+    private fun getLikeIconResId(liked: Boolean) =
+        if (liked) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24*/
 
-        override fun areItemsTheSame(oldItem: Post, newItem: Post) =
-            oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: Post, newItem: Post) =
-            oldItem == newItem
+    private fun viewCounts(counts: Int): String {
+        var finalCount = "0"
+        when (counts) {
+            in 0..999 -> finalCount = counts.toString()
+            in 1000..9999 -> finalCount = "${counts / 1000}.${(counts / 1000) / 100}K"
+            in 10000..99999 -> finalCount = "${counts / 10000}K"
+        }
+        return finalCount
     }
+}
+
+private object DiffCallBack : DiffUtil.ItemCallback<Post>() {
+
+    override fun areItemsTheSame(oldItem: Post, newItem: Post) =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: Post, newItem: Post) =
+        oldItem == newItem
 }
