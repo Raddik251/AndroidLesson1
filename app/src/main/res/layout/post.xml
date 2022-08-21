@@ -10,10 +10,10 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="@dimen/commonMargin"
+        android:contentDescription="@string/description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/netology"
-        />
+        tools:srcCompat="@drawable/netology" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
@@ -23,12 +23,11 @@
         android:layout_marginBottom="4dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textSize="@dimen/commonMargin"
+        android:textSize="@dimen/commonTextSize"
         app:layout_constraintEnd_toStartOf="@id/options"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@id/avatar"
-        tools:text="@string/netologyTitle"
-        />
+        tools:text="@string/netologyTitle" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/date"
@@ -41,109 +40,81 @@
         app:layout_constraintBottom_toBottomOf="@id/avatar"
         app:layout_constraintStart_toEndOf="@id/avatar"
         app:layout_constraintTop_toBottomOf="@id/title"
-        tools:text="@string/datePost"
-        />
+        tools:text="@string/datePost" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/options"
+        style="@style/Widget.AppCompat.CommonButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/commonMargin"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_baseline_more_vert_24"
+        android:contentDescription="@string/description"
+        app:icon="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/headerBarrier"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="avatar, date, options"
-        />
+        app:constraint_referenced_ids="avatar, date, options" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/commonMargin"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerBarrier"
-        tools:text="@string/content"
-        />
+        tools:text="@string/content" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/footerBarrier"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="content"
-        />
+        app:constraint_referenced_ids="content" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/likeIcon"
+        style="@style/Widget.AppCompat.LikeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_favorite_border_24"
         android:background="@android:color/transparent"
-        android:layout_marginTop="@dimen/commonMargin"
-        app:layout_constraintTop_toBottomOf="@id/footerBarrier"
+        android:checkable="true"
+        android:contentDescription="@string/description"
+        app:layout_constraintEnd_toStartOf="@id/shareIcon"
         app:layout_constraintStart_toStartOf="@id/content"
-        />
+        app:layout_constraintTop_toBottomOf="@id/footerBarrier"
+        tools:text="100500" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/countLikes"
-        android:layout_width="0dp"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/shareIcon"
+        style="@style/Widget.AppCompat.CommonButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/commonMargin"
+        android:background="@android:color/transparent"
+        android:checkable="true"
+        android:contentDescription="@string/description"
+        app:icon="@drawable/ic_baseline_share_24"
         app:layout_constraintStart_toEndOf="@id/likeIcon"
         app:layout_constraintTop_toTopOf="@id/likeIcon"
-        tools:text="@string/countLikes"
-        />
+        tools:text="5" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/shareIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_share_24"
-        android:background="@android:color/transparent"
-        android:layout_marginStart="@dimen/commonMargin"
-        app:layout_constraintTop_toTopOf="@id/likeIcon"
-        app:layout_constraintStart_toEndOf="@id/countLikes"
-        />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/countShares"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/commonMargin"
-        app:layout_constraintStart_toEndOf="@id/shareIcon"
-        app:layout_constraintTop_toTopOf="@id/shareIcon"
-        app:layout_constraintEnd_toStartOf="@id/viewIcon"
-        tools:text="@string/countShares"
-        />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/countViews"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/commonMargin"
-        app:layout_constraintEnd_toEndOf="@id/content"
-        app:layout_constraintTop_toTopOf="@id/countShares"
-        tools:text="@string/countShares"
-        />
-
-    <androidx.appcompat.widget.AppCompatImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/viewIcon"
+        style="@style/Widget.AppCompat.CommonButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_remove_red_eye_24"
-        android:background="@android:color/transparent"
         android:layout_marginEnd="@dimen/commonMargin"
-        app:layout_constraintTop_toTopOf="@id/countViews"
-        app:layout_constraintEnd_toStartOf="@id/countViews"
-        />
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/description"
+        app:icon="@drawable/ic_baseline_remove_red_eye_24"
+        app:layout_constraintEnd_toEndOf="@id/content"
+        app:layout_constraintTop_toTopOf="@id/shareIcon"
+        tools:text="0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
