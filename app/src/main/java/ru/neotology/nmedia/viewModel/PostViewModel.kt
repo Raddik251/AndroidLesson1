@@ -2,6 +2,7 @@ package ru.neotology.nmedia.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.neotology.nmedia.adapter.PostAdapter
 import ru.neotology.nmedia.adapter.PostInteractionListener
 import ru.neotology.nmedia.data.PostRepository
 import ru.neotology.nmedia.data.imp.InMemoryPostRepository
@@ -12,6 +13,8 @@ class PostViewModel : ViewModel(), PostInteractionListener {
     private val repository: PostRepository = InMemoryPostRepository()
 
     val data by repository::data
+
+    var flag = MutableLiveData<Boolean?>(false)
 
     val currentPost = MutableLiveData<Post?>(null)
 
@@ -30,6 +33,7 @@ class PostViewModel : ViewModel(), PostInteractionListener {
         )
         repository.save(post)
         currentPost.value = null
+        this.flag.value = !flag.value!!
     }
 
     //region PostInreractionListener
@@ -42,6 +46,7 @@ class PostViewModel : ViewModel(), PostInteractionListener {
 
     override fun onEditClicked(post: Post) {
         currentPost.value = post
+        this.flag.value = !flag.value!!
     }
 
     //endregion PostInreractionListener

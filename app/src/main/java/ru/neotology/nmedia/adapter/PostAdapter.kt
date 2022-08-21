@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.neotology.nmedia.R
+import ru.neotology.nmedia.data.imp.InMemoryPostRepository
 import ru.neotology.nmedia.databinding.PostBinding
 import ru.neotology.nmedia.dto.Post
 
@@ -33,10 +34,10 @@ internal class PostAdapter(
         private lateinit var post: Post
 
         private val popupMenu by lazy {
-            PopupMenu (itemView.context, binding.options).apply {
+            PopupMenu(itemView.context, binding.options).apply {
                 inflate(R.menu.option_post)
                 setOnMenuItemClickListener { menuItem ->
-                    when(menuItem.itemId) {
+                    when (menuItem.itemId) {
                         R.id.remove -> {
                             listener.onRemoveClicked(post)
                             true
@@ -54,7 +55,6 @@ internal class PostAdapter(
         init {
             binding.likeIcon.setOnClickListener { listener.onLikeClicked(post) }
             binding.shareIcon.setOnClickListener { listener.onShareClicked(post) }
-/*            binding.shareIcon.setOnClickListener { listener.onRemoveClicked(post) }*/
         }
 
         fun bind(post: Post) {
@@ -68,7 +68,7 @@ internal class PostAdapter(
                 countLikes.text = viewCounts(post.countLikes)
                 countShares.text = viewCounts(post.countShares)
                 likeIcon.setImageResource(getLikeIconResId(post.likedByMe))
-                options.setOnClickListener { popupMenu.show()}
+                options.setOnClickListener { popupMenu.show() }
             }
         }
 

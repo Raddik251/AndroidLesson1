@@ -2,8 +2,10 @@ package ru.neotology.nmedia
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View.*
 import androidx.activity.viewModels
 import ru.neotology.nmedia.adapter.PostAdapter
+import ru.neotology.nmedia.data.imp.InMemoryPostRepository
 import ru.neotology.nmedia.databinding.ActivityMainBinding
 import ru.neotology.nmedia.util.hideKeyboard
 import ru.neotology.nmedia.viewModel.PostViewModel
@@ -34,7 +36,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.currentPost.observe(this) {currentPost ->
+        viewModel.flag.observe(this) { value ->
+            if (value == true) binding.cancelButton.visibility = VISIBLE
+            else binding.cancelButton.visibility = INVISIBLE
+        }
+
+        binding.cancelButton.setOnClickListener{
+                binding.contentEditText.setText(viewModel.currentPost.value?.content)
+        }
+
+        viewModel.currentPost.observe(this) { currentPost ->
             binding.contentEditText.setText(currentPost?.content)
         }
     }

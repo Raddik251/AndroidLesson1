@@ -8,9 +8,10 @@ class InMemoryPostRepository : PostRepository {
 
     private var nextId = GENERATED_POSTS_AMOUNT.toLong()
 
-    private val posts get() = checkNotNull(data.value) {
-        "Data value should not be null"
-    }
+    private val posts
+        get() = checkNotNull(data.value) {
+            "Data value should not be null"
+        }
 
     override val data = MutableLiveData(
         List(GENERATED_POSTS_AMOUNT) { index ->
@@ -45,12 +46,12 @@ class InMemoryPostRepository : PostRepository {
     }
 
     override fun remove(postId: Long) {
-        data.value = posts.filter {it.id != postId}
+        data.value = posts.filter { it.id != postId }
     }
 
     override fun save(post: Post) {
 
-        if (post.id == PostRepository.NEW_POST_ID) insert(post) else update (post)
+        if (post.id == PostRepository.NEW_POST_ID) insert(post) else update(post)
     }
 
     private fun insert(post: Post) {
