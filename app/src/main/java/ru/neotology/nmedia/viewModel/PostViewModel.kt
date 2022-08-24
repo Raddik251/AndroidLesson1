@@ -2,11 +2,12 @@ package ru.neotology.nmedia.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.neotology.nmedia.adapter.PostAdapter
+import ru.neotology.nmedia.activity.PostContentActivity
 import ru.neotology.nmedia.adapter.PostInteractionListener
 import ru.neotology.nmedia.data.PostRepository
 import ru.neotology.nmedia.data.imp.InMemoryPostRepository
 import ru.neotology.nmedia.dto.Post
+import ru.neotology.nmedia.util.SingleLiveEvent
 
 class PostViewModel : ViewModel(), PostInteractionListener {
 
@@ -14,9 +15,10 @@ class PostViewModel : ViewModel(), PostInteractionListener {
 
     val data by repository::data
 
-    var flag = MutableLiveData<Boolean?>(false)
+    val sharePostContent = SingleLiveEvent<String> ()
+    val navigateToPostContentScreenEvent = SingleLiveEvent<Unit> ()
 
-    val currentPost = MutableLiveData<Post?>(null)
+    private var currentPost = MutableLiveData<Post?> (null)
 
     fun onSaveButtonClicked(content: String) {
         if (content.isBlank()) return
@@ -33,21 +35,27 @@ class PostViewModel : ViewModel(), PostInteractionListener {
         )
         repository.save(post)
         currentPost.value = null
-        this.flag.value = false
     }
 
     //region PostInreractionListener
 
+    fun onAddClicked() {
+        navigateToPostContentScreenEvent.call()
+    }
+
     override fun onLikeClicked(post: Post) = repository.like(post.id)
 
-    override fun onShareClicked(post: Post) = repository.share(post.id)
+    override fun onShareClicked(post: Post) {
+        repository.share(post.id)
+        sharePostContent.value = post.content
+    }
 
     override fun onRemoveClicked(post: Post) = repository.remove(post.id)
 
     override fun onEditClicked(post: Post) {
+        PostRepository.editText = post.content
         currentPost.value = post
-        this.flag.value = true
+        navigateToPostContentScreenEvent.call()
     }
-
     //endregion PostInreractionListener
 }

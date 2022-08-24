@@ -1,12 +1,13 @@
 package ru.neotology.nmedia
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View.*
+import androidx.activity.result.launch
 import androidx.activity.viewModels
+import ru.neotology.nmedia.activity.PostContentActivity
 import ru.neotology.nmedia.adapter.PostAdapter
 import ru.neotology.nmedia.databinding.ActivityMainBinding
-import ru.neotology.nmedia.util.hideKeyboard
 import ru.neotology.nmedia.viewModel.PostViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -25,27 +26,31 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(posts)
         }
 
-        binding.saveButton.setOnClickListener {
-            with(binding.contentEditText) {
-                val content = text.toString()
-                viewModel.onSaveButtonClicked(content)
+        binding.fab.setOnClickListener {
+            viewModel.onAddClicked()
+        }
 
-                clearFocus()
-                hideKeyboard()
+        viewModel.sharePostContent.observe(this) { postContent ->
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, postContent)
+                type = "text/plain"
             }
+
+            val shareIntent =
+                Intent.createChooser(intent, getString(R.string.chooserSharePost))
+            startActivity(shareIntent)
         }
 
-        viewModel.flag.observe(this) { value ->
-            if (value == true) binding.cancelButton.visibility = VISIBLE
-            else binding.cancelButton.visibility = INVISIBLE
+        val postContentActivityLauncher = registerForActivityResult(
+            PostContentActivity.ResultContract) { postContent ->
+            postContent ?: return@registerForActivityResult
+            viewModel.onSaveButtonClicked(postContent)
         }
 
-        binding.cancelButton.setOnClickListener {
-            binding.contentEditText.setText(viewModel.currentPost.value?.content)
-        }
-
-        viewModel.currentPost.observe(this) { currentPost ->
-            binding.contentEditText.setText(currentPost?.content)
+        viewModel.navigateToPostContentScreenEvent.observe(this) {
+            postContentActivityLauncher.launch()
         }
     }
+
 }

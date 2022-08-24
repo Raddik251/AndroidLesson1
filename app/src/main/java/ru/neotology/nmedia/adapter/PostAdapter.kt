@@ -4,12 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.DrawableRes
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.neotology.nmedia.R
+import ru.neotology.nmedia.activity.PostContentActivity
 import ru.neotology.nmedia.databinding.PostBinding
 import ru.neotology.nmedia.dto.Post
+import ru.neotology.nmedia.viewModel.PostViewModel
 
 internal class PostAdapter(
     private val interactionListener: PostInteractionListener
@@ -68,14 +71,9 @@ internal class PostAdapter(
                 likeIcon.text = viewCounts(post.countLikes)
                 shareIcon.text = viewCounts(post.countShares)
                 likeIcon.isChecked = post.likedByMe
-/*                likeIcon.setButtonDrawable(getLikeIconResId(post.likedByMe))*/
             }
         }
     }
-
-/*    @DrawableRes
-    private fun getLikeIconResId(liked: Boolean) =
-        if (liked) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24*/
 
     private fun viewCounts(counts: Int): String {
         var finalCount = "0"
