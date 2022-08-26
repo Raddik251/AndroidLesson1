@@ -11,57 +11,19 @@
         android:id="@+id/postRecyclerView"
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/toolsTopBarrier"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/post"/>
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/toolsTopBarrier"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:barrierDirection="top"
-        app:constraint_referenced_ids="contentEditText"
-        />
-
-    <EditText
-        android:id="@+id/contentEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/postText"
-        android:inputType="textMultiLine"
-        android:background="@android:color/transparent"
-        android:padding="@dimen/commonMargin"
-        android:importantForAutofill="no"
-        app:layout_constraintTop_toTopOf="@id/toolsTopBarrier"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/saveButton"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <ImageButton
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/commonMargin"
-        android:background="@android:color/transparent"
+        android:layout_margin="@dimen/commonMargin"
         android:contentDescription="@string/description"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/contentEditText"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat = "@drawable/ic_baseline_task_alt_48"
-        />
-
-    <ImageButton
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/description"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@id/saveButton"
-        app:layout_constraintBottom_toTopOf="@id/toolsTopBarrier"
-        app:srcCompat = "@drawable/ic_baseline_highlight_off_48"
+        app:srcCompat = "@drawable/ic_baseline_add_48"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

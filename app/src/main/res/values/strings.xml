@@ -10,4 +10,6 @@
     <string name="description">Description</string>
     <string name="postText">Post text</string>
     <string name="postEdit">Change</string>
+    <string name="chooserSharePost" translatable="false">Share post</string>
+    <string name="chooserVideoShow" translatable="false">Show video</string>
 </resources>

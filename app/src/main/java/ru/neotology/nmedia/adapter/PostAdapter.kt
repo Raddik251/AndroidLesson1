@@ -1,9 +1,14 @@
 package ru.neotology.nmedia.adapter
 
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.result.launch
+import androidx.activity.viewModels
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -55,6 +60,8 @@ internal class PostAdapter(
             binding.likeIcon.setOnClickListener { listener.onLikeClicked(post) }
             binding.shareIcon.setOnClickListener { listener.onShareClicked(post) }
             binding.options.setOnClickListener { popupMenu.show()}
+            binding.launchVideo.setOnClickListener { listener.onVideoShow(post) }
+            binding.videoImage.setOnClickListener { listener.onVideoShow(post) }
         }
 
         fun bind(post: Post) {
@@ -68,14 +75,11 @@ internal class PostAdapter(
                 likeIcon.text = viewCounts(post.countLikes)
                 shareIcon.text = viewCounts(post.countShares)
                 likeIcon.isChecked = post.likedByMe
-/*                likeIcon.setButtonDrawable(getLikeIconResId(post.likedByMe))*/
+                videoImage.visibility = if (post.videoShowCheck) View.GONE else View.VISIBLE
+                launchVideo.visibility = if (post.videoShowCheck) View.GONE else View.VISIBLE
             }
         }
     }
-
-/*    @DrawableRes
-    private fun getLikeIconResId(liked: Boolean) =
-        if (liked) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24*/
 
     private fun viewCounts(counts: Int): String {
         var finalCount = "0"

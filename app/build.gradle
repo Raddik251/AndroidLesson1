@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id "kotlin-android"
-    id "kotlin-android-extensions"
+/*    id "kotlin-android-extensions"*/
 }
 
 android {
@@ -44,4 +44,6 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
     implementation "androidx.activity:activity-ktx:1.5.1"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 }
