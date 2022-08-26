@@ -9,7 +9,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ru.neotology.nmedia.data.PostRepository
 import ru.neotology.nmedia.databinding.PostContentActivityBinding
-import ru.neotology.nmedia.dto.Post
 import ru.neotology.nmedia.viewModel.PostViewModel
 
 class PostContentActivity : AppCompatActivity() {

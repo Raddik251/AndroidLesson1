@@ -21,7 +21,8 @@ class InMemoryPostRepository : PostRepository {
                 content = "Университет № ${index + 1} лучших преподавателей",
                 date = "16.08.2022",
                 countLikes = 999 + (100 * index) + 1,
-                countShares = 0
+                countShares = 0,
+                link = "https://www.youtube.com/watch?v=WhWc3b3KhnY"
             )
         }
     )
@@ -71,7 +72,7 @@ class InMemoryPostRepository : PostRepository {
     }
 
     companion object {
-        private const val GENERATED_POSTS_AMOUNT = 100
+        private const val GENERATED_POSTS_AMOUNT = 2
     }
 
 }

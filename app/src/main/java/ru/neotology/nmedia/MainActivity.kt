@@ -1,6 +1,7 @@
 package ru.neotology.nmedia
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.launch
@@ -29,6 +30,18 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setOnClickListener {
             viewModel.onAddClicked()
         }
+
+        viewModel.showVideo.observe(this) { urlVideo ->
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlVideo.toString())).apply {
+                action = Intent.ACTION_VIEW
+                type = "photo/video"
+            }
+
+            val showVideo =
+                Intent.createChooser(intent, getString(R.string.chooserVideoShow))
+            startActivity(showVideo)
+        }
+
 
         viewModel.sharePostContent.observe(this) { postContent ->
             val intent = Intent().apply {

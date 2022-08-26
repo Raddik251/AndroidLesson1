@@ -1,8 +1,8 @@
 package ru.neotology.nmedia.viewModel
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.neotology.nmedia.activity.PostContentActivity
 import ru.neotology.nmedia.adapter.PostInteractionListener
 import ru.neotology.nmedia.data.PostRepository
 import ru.neotology.nmedia.data.imp.InMemoryPostRepository
@@ -16,9 +16,10 @@ class PostViewModel : ViewModel(), PostInteractionListener {
     val data by repository::data
 
     val sharePostContent = SingleLiveEvent<String> ()
+    val showVideo = SingleLiveEvent<Uri> ()
     val navigateToPostContentScreenEvent = SingleLiveEvent<Unit> ()
 
-    private var currentPost = MutableLiveData<Post?> (null)
+    var currentPost = MutableLiveData<Post?> (null)
 
     fun onSaveButtonClicked(content: String) {
         if (content.isBlank()) return
@@ -56,6 +57,10 @@ class PostViewModel : ViewModel(), PostInteractionListener {
         PostRepository.editText = post.content
         currentPost.value = post
         navigateToPostContentScreenEvent.call()
+    }
+
+    override fun onVideoShow(post: Post) {
+        showVideo.value = Uri.parse("${post.link}")
     }
     //endregion PostInreractionListener
 }

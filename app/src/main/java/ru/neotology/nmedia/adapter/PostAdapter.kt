@@ -1,18 +1,20 @@
 package ru.neotology.nmedia.adapter
 
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.result.launch
+import androidx.activity.viewModels
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.annotation.DrawableRes
-import androidx.lifecycle.ViewModel
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.neotology.nmedia.R
-import ru.neotology.nmedia.activity.PostContentActivity
 import ru.neotology.nmedia.databinding.PostBinding
 import ru.neotology.nmedia.dto.Post
-import ru.neotology.nmedia.viewModel.PostViewModel
 
 internal class PostAdapter(
     private val interactionListener: PostInteractionListener
@@ -58,6 +60,8 @@ internal class PostAdapter(
             binding.likeIcon.setOnClickListener { listener.onLikeClicked(post) }
             binding.shareIcon.setOnClickListener { listener.onShareClicked(post) }
             binding.options.setOnClickListener { popupMenu.show()}
+            binding.launchVideo.setOnClickListener { listener.onVideoShow(post) }
+            binding.videoImage.setOnClickListener { listener.onVideoShow(post) }
         }
 
         fun bind(post: Post) {
@@ -71,6 +75,8 @@ internal class PostAdapter(
                 likeIcon.text = viewCounts(post.countLikes)
                 shareIcon.text = viewCounts(post.countShares)
                 likeIcon.isChecked = post.likedByMe
+                videoImage.visibility = if (post.videoShowCheck) View.GONE else View.VISIBLE
+                launchVideo.visibility = if (post.videoShowCheck) View.GONE else View.VISIBLE
             }
         }
     }
