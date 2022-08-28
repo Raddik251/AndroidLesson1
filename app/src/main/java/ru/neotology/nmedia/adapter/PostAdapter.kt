@@ -57,6 +57,10 @@ internal class PostAdapter(
             binding.options.setOnClickListener { popupMenu.show()}
             binding.launchVideo.setOnClickListener { listener.onVideoShow(post) }
             binding.videoImage.setOnClickListener { listener.onVideoShow(post) }
+            binding.avatar.setOnClickListener { listener.onSinglePostShow(post) }
+            binding.title.setOnClickListener { listener.onSinglePostShow(post) }
+            binding.date.setOnClickListener { listener.onSinglePostShow(post) }
+            binding.content.setOnClickListener { listener.onSinglePostShow(post) }
             binding.viewIcon.setOnClickListener { listener.onSinglePostShow(post) }
         }
 

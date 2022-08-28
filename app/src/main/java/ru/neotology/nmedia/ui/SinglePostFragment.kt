@@ -76,7 +76,7 @@ class SinglePostFragment : Fragment() {
         )
 
         viewModel.data.observe(viewLifecycleOwner) { posts ->
-            if (posts.find { it.id == post.id } == null) findNavController().navigateUp()
+            if (posts.find { it.id == post.id } == null) findNavController().navigate(SinglePostFragmentDirections.toFeedFragment())
             else {
 
                 val postRefresh = posts.find { it.id == post.id }
