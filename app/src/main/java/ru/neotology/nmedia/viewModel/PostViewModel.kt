@@ -25,7 +25,7 @@ class PostViewModel(
     val navigateToPostContentScreenEvent = SingleLiveEvent<String>()
     val navigateToPostSingleScreenEvent = SingleLiveEvent<Post>()
 
-    private val currentPost = MutableLiveData<Post?>(null)
+    val currentPost = MutableLiveData<Post?>(null)
 
     fun onSaveButtonClicked(content: String) {
         if (content.isBlank()) return
