@@ -1,4 +1,4 @@
-package ru.neotology.nmedia.activity
+package ru.neotology.nmedia.ui
 
 import android.content.Intent
 import android.os.Bundle
