@@ -21,8 +21,9 @@ class PostViewModel(
     val data by repository::data
 
     val sharePostContent = SingleLiveEvent<String>()
-    val showVideo = SingleLiveEvent<Uri>()
+    val showVideo = SingleLiveEvent<String?>()
     val navigateToPostContentScreenEvent = SingleLiveEvent<String>()
+    val navigateToPostSingleScreenEvent = SingleLiveEvent<Post>()
 
     private val currentPost = MutableLiveData<Post?>(null)
 
@@ -64,12 +65,13 @@ class PostViewModel(
     }
 
     override fun onVideoShow(post: Post) {
-        showVideo.value = Uri.parse("${post.link}")
+        post.link = "https://www.youtube.com/watch?v=WhWc3b3KhnY"
+        showVideo.value = post.link
     }
 
     override fun onSinglePostShow(post: Post) {
         currentPost.value = post
-        navigateToPostContentScreenEvent.value = post.content
+        navigateToPostSingleScreenEvent.value = post
     }
     //endregion PostInreractionListener
 }
