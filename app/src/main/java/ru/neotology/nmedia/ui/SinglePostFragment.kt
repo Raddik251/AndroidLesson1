@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.neotology.nmedia.R
-import ru.neotology.nmedia.adapter.PostAdapter
 import ru.neotology.nmedia.databinding.PostSingleBinding
 import ru.neotology.nmedia.dto.Post
 import ru.neotology.nmedia.viewModel.PostViewModel
@@ -62,7 +62,7 @@ class SinglePostFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = PostSingleBinding.inflate(layoutInflater, container, false).also { binding ->
 
-        val post = Post (
+        val post = Post(
             id = args.id,
             title = args.title,
             date = args.date,
@@ -76,22 +76,45 @@ class SinglePostFragment : Fragment() {
         )
 
         viewModel.data.observe(viewLifecycleOwner) { posts ->
-            val post = posts.find { it.id == post.id } ?: return@observe
+            if (posts.find { it.id == post.id } == null) findNavController().navigate(SinglePostFragmentDirections.toFeedFragment())
+            else {
 
-            with(binding) {
-                title.text = args.title
-                date.text = args.date
-                content.text = args.content
-                likeIcon.text = args.countLikes.toString()
-                shareIcon.text = args.countShares.toString()
-                videoImage.visibility = if (args.videoShowCheck) View.GONE else View.VISIBLE
-                launchVideo.visibility = if (args.videoShowCheck) View.GONE else View.VISIBLE
+                val postRefresh = posts.find { it.id == post.id }
 
-                likeIcon.setOnClickListener { viewModel.onLikeClicked(post) }
-                shareIcon.setOnClickListener { viewModel.onShareClicked(post) }
-                launchVideo.setOnClickListener { viewModel.onVideoShow(post) }
-                videoImage.setOnClickListener { viewModel.onVideoShow(post) }
-                options.setOnClickListener{ }
+                with(binding) {
+                    title.text = post.title
+                    date.text = post.date
+                    content.text = post.content
+                    likeIcon.text = postRefresh?.countLikes.toString()
+                    shareIcon.text = postRefresh?.countShares.toString()
+                    videoImage.visibility = if (post.videoShowCheck) View.GONE else View.VISIBLE
+                    launchVideo.visibility = if (post.videoShowCheck) View.GONE else View.VISIBLE
+
+                    likeIcon.setOnClickListener { viewModel.onLikeClicked(post) }
+                    shareIcon.setOnClickListener { viewModel.onShareClicked(post) }
+                    launchVideo.setOnClickListener { viewModel.onVideoShow(post) }
+                    videoImage.setOnClickListener { viewModel.onVideoShow(post) }
+                }
+
+                val popupMenu by lazy {
+                    PopupMenu(layoutInflater.context, binding.options).apply {
+                        inflate(R.menu.option_post)
+                        setOnMenuItemClickListener { menuItem ->
+                            when (menuItem.itemId) {
+                                R.id.remove -> {
+                                    viewModel.onRemoveClicked(post)
+                                    true
+                                }
+                                R.id.edit -> {
+                                    viewModel.onEditClicked(post)
+                                    true
+                                }
+                                else -> false
+                            }
+                        }
+                    }
+                }
+                binding.options.setOnClickListener { popupMenu.show() }
             }
         }
     }.root
