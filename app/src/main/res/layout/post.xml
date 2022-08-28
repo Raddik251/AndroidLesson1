@@ -139,6 +139,8 @@
         android:layout_marginEnd="@dimen/commonMargin"
         android:background="@android:color/transparent"
         android:contentDescription="@string/description"
+        android:clickable="true"
+        android:focusable="true"
         app:icon="@drawable/ic_baseline_remove_red_eye_24"
         app:layout_constraintEnd_toEndOf="@id/content"
         app:layout_constraintTop_toTopOf="@id/shareIcon"

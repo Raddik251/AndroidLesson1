@@ -24,8 +24,6 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textSize="@dimen/commonTextSize"
-        android:clickable="true"
-        android:focusable="true"
         app:layout_constraintEnd_toStartOf="@id/options"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@id/avatar"

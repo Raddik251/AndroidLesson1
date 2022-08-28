@@ -9,6 +9,9 @@
         <action
             android:id="@+id/toPostContentFragment"
             app:destination="@id/postContentFragment" />
+        <action
+            android:id="@+id/toSinglePostFragment"
+            app:destination="@id/singlePostFragment" />
     </fragment>
     <fragment
         android:id="@+id/postContentFragment"
@@ -17,5 +20,43 @@
         android:name="initialContent"
         app:argType="string"
         app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/singlePostFragment"
+        android:name="ru.neotology.nmedia.ui.SinglePostFragment">
+        <action
+            android:id="@+id/toPostContentFragment"
+            app:destination="@id/postContentFragment" />
+        <argument
+            android:name="id"
+            app:argType="long" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="content"
+            app:argType="string" />
+        <argument
+            android:name="date"
+            app:argType="string" />
+        <argument
+            android:name="countLikes"
+            app:argType="integer" />
+        <argument
+            android:name="countShares"
+            app:argType="integer" />
+        <argument
+            android:name="likes"
+            app:argType="integer" />
+        <argument
+            android:name="likedByMe"
+            app:argType="boolean" />
+        <argument
+            android:name="videoShowCheck"
+            app:argType="boolean" />
+        <argument
+            android:name="link"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

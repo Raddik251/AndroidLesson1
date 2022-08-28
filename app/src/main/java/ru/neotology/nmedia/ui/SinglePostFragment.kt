@@ -4,19 +4,23 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import ru.neotology.nmedia.R
 import ru.neotology.nmedia.adapter.PostAdapter
-import ru.neotology.nmedia.databinding.FeedFragmentBinding
+import ru.neotology.nmedia.databinding.PostSingleBinding
+import ru.neotology.nmedia.dto.Post
 import ru.neotology.nmedia.viewModel.PostViewModel
 
-class FeedFragment : Fragment() {
+class SinglePostFragment : Fragment() {
 
     private val viewModel by viewModels<PostViewModel>()
+
+    private val args by navArgs<SinglePostFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,34 +49,8 @@ class FeedFragment : Fragment() {
             startActivity(shareIntent)
         }
 
-        setFragmentResultListener(
-            requestKey = PostContentFragment.REQUEST_KEY
-        ) { requestKey, bundle ->
-            if (requestKey != PostContentFragment.REQUEST_KEY) return@setFragmentResultListener
-            val newPostContent = bundle.getString(
-                PostContentFragment.RESULT_KEY
-            ) ?: return@setFragmentResultListener
-            viewModel.onSaveButtonClicked(newPostContent)
-        }
-
         viewModel.navigateToPostContentScreenEvent.observe(this) { initialContent ->
-            val direction = FeedFragmentDirections.toPostContentFragment(initialContent)
-            findNavController().navigate(direction)
-        }
-
-        viewModel.navigateToPostSingleScreenEvent.observe(this) { currentPost ->
-            val direction = FeedFragmentDirections.toSinglePostFragment(
-                currentPost.id,
-                currentPost.title,
-                currentPost.content,
-                currentPost.date,
-                currentPost.countLikes,
-                currentPost.countShares,
-                currentPost.likes,
-                currentPost.likedByMe,
-                currentPost.videoShowCheck,
-                currentPost.link
-            )
+            val direction = SinglePostFragmentDirections.toPostContentFragment(initialContent)
             findNavController().navigate(direction)
         }
 
@@ -82,16 +60,39 @@ class FeedFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FeedFragmentBinding.inflate(layoutInflater, container, false).also { binding ->
+    ) = PostSingleBinding.inflate(layoutInflater, container, false).also { binding ->
 
-        val adapter = PostAdapter(viewModel)
-        binding.postRecyclerView.adapter = adapter
+        val post = Post (
+            id = args.id,
+            title = args.title,
+            date = args.date,
+            content = args.content,
+            countLikes = args.countLikes,
+            countShares = args.countShares,
+            likes = args.likes,
+            likedByMe = args.likedByMe,
+            videoShowCheck = args.videoShowCheck,
+            link = args.link
+        )
+
         viewModel.data.observe(viewLifecycleOwner) { posts ->
-            adapter.submitList(posts)
-        }
+            val post = posts.find { it.id == post.id } ?: return@observe
 
-        binding.fab.setOnClickListener {
-            viewModel.onAddClicked()
+            with(binding) {
+                title.text = args.title
+                date.text = args.date
+                content.text = args.content
+                likeIcon.text = args.countLikes.toString()
+                shareIcon.text = args.countShares.toString()
+                videoImage.visibility = if (args.videoShowCheck) View.GONE else View.VISIBLE
+                launchVideo.visibility = if (args.videoShowCheck) View.GONE else View.VISIBLE
+
+                likeIcon.setOnClickListener { viewModel.onLikeClicked(post) }
+                shareIcon.setOnClickListener { viewModel.onShareClicked(post) }
+                launchVideo.setOnClickListener { viewModel.onVideoShow(post) }
+                videoImage.setOnClickListener { viewModel.onVideoShow(post) }
+                options.setOnClickListener{ }
+            }
         }
     }.root
 

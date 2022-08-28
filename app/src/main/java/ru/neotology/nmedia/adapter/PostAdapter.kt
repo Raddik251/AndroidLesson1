@@ -1,14 +1,9 @@
 package ru.neotology.nmedia.adapter
 
-import android.content.Intent
-import android.net.Uri
-import androidx.activity.result.launch
-import androidx.activity.viewModels
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -62,6 +57,7 @@ internal class PostAdapter(
             binding.options.setOnClickListener { popupMenu.show()}
             binding.launchVideo.setOnClickListener { listener.onVideoShow(post) }
             binding.videoImage.setOnClickListener { listener.onVideoShow(post) }
+            binding.viewIcon.setOnClickListener { listener.onSinglePostShow(post) }
         }
 
         fun bind(post: Post) {
